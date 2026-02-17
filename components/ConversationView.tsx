@@ -45,17 +45,20 @@ function approxRms(signal: Float32Array, step = 8): number {
 }
 
 async function getEphemeralToken(): Promise<string> {
-  const r = await fetch("http://localhost:8787/api/ephemeral-token");
-  const text = await r.text(); // 👈 lee SIEMPRE el body
+  // En Vercel esto pega a /api/ephemeral-token en el MISMO dominio
+  // En local puedes sobreescribir con VITE_TOKEN_URL si quieres
+  const url = import.meta.env.VITE_TOKEN_URL || "/api/ephemeral-token";
 
-  if (!r.ok) {
-    throw new Error(`Token server error (${r.status}): ${text}`);
-  }
+  const r = await fetch(url, { cache: "no-store" });
+  const text = await r.text();
+
+  if (!r.ok) throw new Error(`Token server error (${r.status}): ${text}`);
 
   const data = JSON.parse(text);
   if (!data?.token) throw new Error(`No token returned: ${text}`);
   return data.token;
 }
+
 
 
 const ConversationView: React.FC<ConversationViewProps> = ({ targetLanguage, studentLevel }) => {
