@@ -1,0 +1,7 @@
+{
+  "name": "Conversational Language Teacher",
+  "description": "An interactive voice-based application that allows users to have real-time conversations with an AI language teacher, 'Profe Nova', to practice and improve their language skills.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
